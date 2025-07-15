@@ -1,0 +1,403 @@
+:root {
+  --color-brand--1: #f29c1f; /* Cycling */
+  --color-brand--2: #00b86b; /* Running */
+
+  --color-dark--1: #48535c; /* Sidebar bg */
+  --color-dark--2: #42484d; /* Workout item bg */
+  --color-light--1: #aaa; /* Light text */
+  --color-light--2: #ececec; /* Primary text */
+  --color-light--3: rgb(214, 222, 224); /* Input bg */
+
+  --color-red--1: #7c7c7c; /* Delete button */
+  --color-red--2: #e04040; /* Delete button hover */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%; /* 1rem = 10px */
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Manrope", sans-serif;
+  color: var(--color-light--2);
+  font-weight: 400;
+  line-height: 1.6;
+  height: 100vh;
+  overscroll-behavior-y: none; /* Prevent bounce effect */
+
+  background-color: var(
+    --color-dark--1
+  ); /* Match sidebar if map doesn't load */
+  padding: 2.5rem; /* Padding around the whole layout */
+
+  display: flex; /* Core layout: Sidebar | Map */
+  gap: 2.5rem; /* Space between sidebar and map */
+}
+
+/* GENERAL */
+a:link,
+a:visited {
+  color: var(--color-brand--2); /* Use running color for links */
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 50rem;
+  flex-basis: 50rem; /* Fixed width for the sidebar */
+  background-color: var(--color-dark--1);
+  padding: 3rem 4rem 4rem 4rem; /* Slightly adjusted padding */
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  position: relative; /* For positioning elements like copyright */
+  height: calc(100vh - 5rem); /* Full height minus body padding */
+  /* overflow-y: hidden; */ /* <<< REMOVED THIS LINE TO FIX CLIPPING */
+}
+
+.logo {
+  height: 15rem;
+  align-self: center; /* Center the logo */
+  margin-bottom: 3rem; /* Space below logo */
+  flex-shrink: 0; /* Prevent logo from shrinking */
+}
+
+/* CONTROLS SECTION */
+.controls {
+  display: flex;
+  justify-content: space-between; /* Space out Sort and Delete All */
+  align-items: center;
+  margin-bottom: 2rem; /* Space below controls */
+  flex-shrink: 0; /* Prevent controls from shrinking */
+}
+
+.btn {
+  padding: 0.6rem 1.6rem;
+  border: none;
+  background-color: var(--color-brand--2); /* Default green */
+  color: var(--color-dark--1); /* Dark text on buttons */
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1.4rem; /* Slightly larger base button font */
+  transition: background-color 0.2s, transform 0.1s;
+}
+.btn:hover {
+  background-color: #00b05f; /* Darker green on hover */
+}
+.btn:active {
+  transform: scale(0.98); /* Click effect */
+}
+
+.btn--sort {
+  /* Basic select reset */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0.6rem 2.5rem 0.6rem 1.2rem; /* Adjusted padding to accommodate arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d3439'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e"); /* Arrow icon (dark) */
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1.2rem;
+  border: none; /* Removed border for cleaner look */
+  border-radius: 5px;
+  background-color: var(--color-brand--2);
+  color: var(--color-dark--1);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+.btn--sort:hover {
+  background-color: #00b05f;
+}
+.btn--sort:active {
+  transform: scale(0.98);
+}
+
+.btn--sort option {
+  background-color: var(--color-dark--1);
+  color: var(--color-light--2);
+}
+
+.btn--delete-all {
+  background-color: var(--color-red--1); /* Red for delete all */
+}
+.btn--delete-all:hover {
+  background-color: var(--color-red--2); /* Darker red */
+}
+
+/* WORKOUTS LIST */
+.workouts {
+  list-style: none;
+  /* height: 70vh; Adjust height based on surrounding elements */
+  flex-grow: 1; /* Take remaining vertical space */
+  overflow-y: auto; /* Enable scrolling ONLY for the list */
+  overflow-x: hidden;
+
+  padding-right: 1rem; /* Space for scrollbar without overlap */
+}
+
+/* Custom scrollbar for workout list */
+.workouts::-webkit-scrollbar {
+  width: 8px;
+}
+.workouts::-webkit-scrollbar-track {
+  background-color: var(--color-dark--1);
+}
+.workouts::-webkit-scrollbar-thumb {
+  background-color: var(--color-dark--2);
+  border-radius: 10px;
+}
+
+.workout {
+  background-color: var(--color-dark--2);
+  border-radius: 5px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.75rem;
+  cursor: pointer;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns for details */
+  grid-template-rows: auto auto auto; /* Title, Details, Buttons */
+  gap: 0.5rem 1.5rem; /* Row gap, Column gap */
+
+  transition: transform 0.2s ease-out;
+}
+.workout:hover {
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+.workout--running {
+  border-left: 5px solid var(--color-brand--2);
+}
+.workout--cycling {
+  border-left: 5px solid var(--color-brand--1);
+}
+
+.workout__title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  grid-column: 1 / -1; /* Span all columns */
+  grid-row: 1; /* First row */
+  margin-bottom: 0.5rem;
+}
+
+.workout__details {
+  display: flex;
+  align-items: baseline;
+  grid-row: 2; /* Details in the second row */
+}
+
+.workout__icon {
+  font-size: 1.8rem;
+  margin-right: 0.4rem; /* Increased space */
+  height: 0.28rem; /* Alignment adjustment */
+}
+
+.workout__value {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.workout__unit {
+  font-size: 1.1rem;
+  color: var(--color-light--1);
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+/* Workout action buttons */
+.workout .btn--edit,
+.workout .btn--delete {
+  grid-row: 3; /* Place buttons in the third row */
+  font-size: 1.2rem; /* Smaller font for item buttons */
+  padding: 0.3rem 0.8rem;
+  margin-top: 0.75rem; /* Space above buttons */
+  align-self: end; /* Align to bottom of grid cell */
+}
+
+.workout .btn--edit {
+  grid-column: 3; /* Edit button in 3rd column */
+  justify-self: end; /* Align right */
+  background-color: #947b41; /* Neutral edit color */
+}
+.workout .btn--edit:hover {
+  background-color: #f29c1f;
+}
+
+.workout .btn--delete {
+  grid-column: 4; /* Delete button in 4th column */
+  justify-self: start; /* Align left */
+  background-color: var(--color-red--1);
+}
+.workout .btn--delete:hover {
+  background-color: var(--color-red--2);
+}
+
+/* FORM STYLES */
+.form {
+  background-color: var(--color-dark--2);
+  border-radius: 5px;
+  padding: 1.5rem 2.75rem;
+  margin-bottom: 2rem; /* Space between form and list */
+
+  display: block;
+
+  /* Transition for showing/hiding */
+  transition: all 1s, transform 0.8s ease-out;
+  /* max-height: 60rem; Allow space for content */
+  opacity: 1;
+  transform: translateY(0);
+  flex-shrink: 1; /*Prevent form from shrinking */
+}
+
+.form.hidden {
+  transform: translateY(-10rem); /* Slide up */
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  opacity: 0;
+  overflow: hidden; /* Important for smooth transition */
+  /* The JS also sets display:none after transition */
+}
+
+.hidden {
+  display: none !important;
+}
+
+.form__row {
+  display: flex;
+  align-items: center;
+}
+
+.form__row--hidden {
+  display: none;
+}
+
+.form__label {
+  flex: 0 0 35%; /* Adjust label width */
+  font-size: 1.4rem; /* Slightly smaller label */
+  font-weight: 600;
+}
+
+.form__input {
+  flex: 1; /* Input takes remaining space */
+  padding: 0.5rem 1.1rem; /* More padding */
+  font-family: inherit;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 3px;
+  background-color: var(--color-light--3);
+  transition: all 0.2s;
+  color: var(--color-dark--1); /* Dark text in inputs */
+}
+.form__input::placeholder {
+  color: var(--color-light--1);
+}
+.form__input:focus {
+  outline: none;
+  background-color: #fff;
+}
+/* Style select dropdown specifically */
+.form__input--type {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 3rem; /* Space for arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d3439'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1.2rem;
+}
+
+.form__btn,
+.form__btn--cancel {
+  /* Inherit button styles */
+  width: 12rem; /* Fixed width */
+  height: 2.8rem; /* Fixed height */
+  padding: 0.2rem 0.6rem;
+  border: none;
+  color: var(--color-dark--1);
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1.4rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.form__btn--cancel {
+  margin-right: 0.1rem; /* Space between buttons */
+  margin-left: 10rem; /* Space between buttons */
+  margin-top: 1rem; /* Space between buttons */
+}
+
+.form__btn {
+  background-color: var(--color-brand--2); /* OK button color */
+}
+
+.form__btn:active {
+  transform: scale(0.98);
+}
+
+.form__btn--cancel {
+  background-color: var(--color-red--1); /* Cancel button color */
+}
+
+.form__btn--cancel:hover {
+  background-color: var(--color-red--2); /* Darker red on hover */
+}
+
+/* MAP STYLES */
+#map {
+  flex: 1; /* Take remaining horizontal space */
+  height: calc(100vh - 5rem); /* Full height minus body padding */
+  background-color: var(--color-light--1); /* Fallback bg */
+  border-radius: 5px;
+}
+
+/* Leaflet Popup Customization */
+.leaflet-popup .leaflet-popup-content-wrapper {
+  background-color: var(--color-dark--1);
+  color: var(--color-light--2);
+  border-radius: 5px;
+  padding-right: 0.6rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.leaflet-popup .leaflet-popup-content {
+  font-size: 1.5rem;
+}
+
+.leaflet-popup .leaflet-popup-tip {
+  background-color: var(--color-dark--1);
+}
+
+/* Custom popup styles based on workout type */
+.running-popup .leaflet-popup-content-wrapper {
+  border-left: 5px solid var(--color-brand--2);
+}
+.cycling-popup .leaflet-popup-content-wrapper {
+  border-left: 5px solid var(--color-brand--1);
+}
+
+/* Make Leaflet controls slightly transparent */
+.leaflet-control-zoom a,
+.leaflet-control-attribution a {
+  color: var(--color-dark--1);
+}
+.leaflet-control-zoom,
+.leaflet-control-attribution {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 3px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
